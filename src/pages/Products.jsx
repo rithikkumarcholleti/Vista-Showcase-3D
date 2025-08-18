@@ -14,7 +14,8 @@ const products = [
     description: 'All-electric luxury sedan with cutting-edge technology',
     price: '₹99,89,990',
     imageSrc: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
+    category: 'cars',
+     modelPath: '/models/tesla.glb'
   },
   {
     id: '2',
