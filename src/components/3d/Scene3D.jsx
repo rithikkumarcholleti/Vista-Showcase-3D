@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from "react";
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -8,7 +8,6 @@ import {
   Environment,
 } from "@react-three/drei";
 import { motion } from "framer-motion";
-import { ErrorBoundary } from "react-error-boundary";
 
 // ---------------------- Car Model Fallback ----------------------
 const CarModelFallback = () => {
@@ -39,22 +38,18 @@ const CarModelFallback = () => {
       </mesh>
 
       {/* Wheels */}
-      <mesh position={[-0.6, -0.25, 0.5]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.2, 0.2, 0.1, 16]} />
-        <meshStandardMaterial color="#111" metalness={0.5} roughness={0.8} />
-      </mesh>
-      <mesh position={[-0.6, -0.25, -0.5]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.2, 0.2, 0.1, 16]} />
-        <meshStandardMaterial color="#111" metalness={0.5} roughness={0.8} />
-      </mesh>
-      <mesh position={[0.6, -0.25, 0.5]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.2, 0.2, 0.1, 16]} />
-        <meshStandardMaterial color="#111" metalness={0.5} roughness={0.8} />
-      </mesh>
-      <mesh position={[0.6, -0.25, -0.5]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.2, 0.2, 0.1, 16]} />
-        <meshStandardMaterial color="#111" metalness={0.5} roughness={0.8} />
-      </mesh>
+      {[-0.6, 0.6].map((x) =>
+        [0.5, -0.5].map((z, i) => (
+          <mesh
+            key={`${x}-${z}-${i}`}
+            position={[x, -0.25, z]}
+            rotation={[Math.PI / 2, 0, 0]}
+          >
+            <cylinderGeometry args={[0.2, 0.2, 0.1, 16]} />
+            <meshStandardMaterial color="#111" metalness={0.5} roughness={0.8} />
+          </mesh>
+        ))
+      )}
 
       {/* Headlights */}
       <mesh position={[-0.95, 0, 0.35]}>
@@ -77,46 +72,23 @@ const CarModelFallback = () => {
   );
 };
 
-// ---------------------- Model Loader ----------------------
+// ---------------------- Model Loader with fallback ----------------------
 const Model = ({ modelPath }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
   try {
-    const { scene } = useGLTF(
-      modelPath,
-      undefined,
-      (e) => {
-        console.error("Error loading model:", e);
-        setHasError(true);
-        setIsLoading(false);
-      }
-    );
-
-    useEffect(() => {
-      setIsLoading(false);
-    }, [scene]);
-
-    if (hasError) return <CarModelFallback />;
+    const { scene } = useGLTF(modelPath);
     return <primitive object={scene} scale={1} />;
-  } catch (error) {
-    console.error("Error in Model component:", error);
+  } catch (err) {
+    console.warn(`❌ Failed to load ${modelPath}. Showing fallback model.`);
     return <CarModelFallback />;
   }
 };
 
-// ---------------------- Error Fallback UI ----------------------
-const FallbackError = () => (
-  <div className="flex items-center justify-center h-full">
-    <div className="text-center p-4">
-      <h3 className="text-xl font-semibold mb-2">Could not load 3D model</h3>
-      <p className="text-gray-400">Showing a product visualization instead</p>
-    </div>
-  </div>
-);
-
 // ---------------------- Scene Component ----------------------
-const Scene3D = ({ modelPath, autoRotate = true, backgroundColor = "transparent" }) => {
+const Scene3D = ({
+  modelPath,
+  autoRotate = true,
+  backgroundColor = "transparent",
+}) => {
   return (
     <motion.div
       className="w-full h-[400px] md:h-[500px] lg:h-[600px]"
@@ -125,34 +97,36 @@ const Scene3D = ({ modelPath, autoRotate = true, backgroundColor = "transparent"
       transition={{ duration: 0.7, ease: "easeOut" }}
       viewport={{ once: true }}
     >
-      <ErrorBoundary fallback={<FallbackError />}>
-        <Canvas
-          shadows
-          dpr={[1, 2]}
-          camera={{ fov: 45 }}
-          style={{ background: backgroundColor }}
-        >
-          <Suspense fallback={null}>
-            <PresentationControls
-              global
-              zoom={0.8}
-              rotation={[0, -Math.PI / 4, 0]}
-              polar={[-Math.PI / 4, Math.PI / 4]}
-              azimuth={[-Math.PI / 4, Math.PI / 4]}
-            >
-              <Stage environment="city" intensity={1} shadows>
-                <Model modelPath={modelPath} />
-              </Stage>
-            </PresentationControls>
+      <Canvas
+        shadows
+        dpr={[1, 2]}
+        camera={{ fov: 45 }}
+        style={{ background: backgroundColor }}
+      >
+        <Suspense fallback={<CarModelFallback />}>
+          <PresentationControls
+            global
+            zoom={0.8}
+            rotation={[0, -Math.PI / 4, 0]}
+            polar={[-Math.PI / 4, Math.PI / 4]}
+            azimuth={[-Math.PI / 4, Math.PI / 4]}
+          >
+            <Stage environment="city" intensity={1} shadows>
+              <Model modelPath={modelPath} />
+            </Stage>
+          </PresentationControls>
 
-            {autoRotate && (
-              <OrbitControls autoRotate autoRotateSpeed={1.5} enableZoom={false} />
-            )}
+          {autoRotate && (
+            <OrbitControls
+              autoRotate
+              autoRotateSpeed={1.5}
+              enableZoom={false}
+            />
+          )}
 
-            <Environment preset="city" />
-          </Suspense>
-        </Canvas>
-      </ErrorBoundary>
+          <Environment preset="city" />
+        </Suspense>
+      </Canvas>
     </motion.div>
   );
 };

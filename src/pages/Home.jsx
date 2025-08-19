@@ -20,7 +20,7 @@ const featuredProducts = [
     category: 'cars'
   },
   {
-    id: '2',
+    id: '3',
     name: 'Audi e-tron GT',
     description: 'High-performance electric sports car with stunning design',
     price: '₹90,04,900',
@@ -28,7 +28,7 @@ const featuredProducts = [
     category: 'cars'
   },
   {
-    id: '3',
+    id: '7',
     name: 'Porsche Taycan',
     description: 'Precision-engineered electric sports car with iconic styling',
     price: '₹80,86,700',
