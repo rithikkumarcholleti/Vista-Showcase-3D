@@ -12,6 +12,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
+import PreloadModels from "@/components/PreloadModels";
+
 // Layout
 import Layout from "./components/layout/Layout";
 
@@ -23,6 +25,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+      {/* Preload all product .glb files so details pages pop instantly */}
+        <PreloadModels />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

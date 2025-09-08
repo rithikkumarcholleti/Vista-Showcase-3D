@@ -4,67 +4,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import Scene3D from "@/components/3d/Scene3D";
 import { ArrowLeft } from 'lucide-react';
-
-// You can move this to a separate data file if needed
-const products = [
-  {
-    id: '1',
-    name: 'Tesla Model S',
-    description: 'All-electric luxury sedan with cutting-edge technology',
-    price: '₹99,89,990',
-    modelPath: '/models/tesla.glb',
-  },
-  {
-    id: '2',
-    name: 'Ducati Panigale V4',
-    description: 'High-performance superbike with racing DNA',
-    price: '₹12,23,295',
-    modelPath: '/models/ducati.glb',
-  },
-  {
-    id: '3',
-    name: 'Audi e-tron GT',
-    description: 'High-performance electric sports car with stunning design',
-    price: '₹90,04,900',
-    modelPath: '/models/audi.glb',
-  },
-  {
-    id: '4',
-    name: 'Kawasaki Ninja ZX-10R',
-    description: 'Track-focused sportbike with advanced electronics',
-    price: '₹11,17,399',
-    modelPath: '/models/vespa.glb',
-  },
-  {
-    id: '5',
-    name: 'BMW M4 Competition',
-    description: 'High-performance luxury coupe with twin-turbo power',
-    price: '₹70,74,700',
-    modelPath: '/models/generic_sport_coupe_car.glb',
-  },
-  {
-    id: '6',
-    name: 'Yamaha YZF-R1',
-    description: 'Legendary superbike with MotoGP-derived technology',
-    price: '₹10,17,599',
-    modelPath: '/models/retro_car.glb',
-  },
-  {
-    id: '7',
-    name: 'Porsche Taycan',
-    description: 'Precision-engineered electric sports car with iconic styling',
-    price: '₹80,86,700',
-   modelPath: '/models/source.glb',
-  },
-  {
-    id: '8',
-    name: 'Harley-Davidson Pan America',
-    description: 'Adventure touring motorcycle built for exploration',
-    price: '₹10,17,319',
-    modelPath: '/models/modern_cartoon_sports_car.glb',
-  },
-  // Add remaining products with corresponding GLB paths...
-];
+import products from '@/data/productsData'; // Correctly import the data
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -104,7 +44,8 @@ const ProductDetails = () => {
         <p className="text-lg text-showcase-muted mb-4">{product.description}</p>
         <p className="text-xl font-semibold text-showcase-accent1 mb-6">{product.price}</p>
 
-        <Scene3D modelPath={product.modelPath} autoRotate backgroundColor="#111" />
+        <Scene3D key={product.modelPath} modelPath={product.modelPath} autoRotate backgroundColor="#111" />
+
       </motion.div>
     </div>
   );

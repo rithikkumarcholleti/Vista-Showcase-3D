@@ -1,81 +1,12 @@
-
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import SectionHeading from '@/components/ui/SectionHeading';
 import ProductCard from '@/components/ui/ProductCard';
 import AnimatedText from '@/components/ui/AnimatedText';
 import { Button } from '@/components/ui/button';
+import products from '@/data/productsData'; // Correctly import the data
+import usePrefetchModels from '@/hooks/usePrefetchModels'; // Import the new hook
 
-// Updated products data with cars and bikes
-const products = [
-  {
-    id: '1',
-    name: 'Tesla Model S',
-    description: 'All-electric luxury sedan with cutting-edge technology',
-    price: '₹99,89,990',
-    imageSrc: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars',
-     modelPath: '/models/tesla.glb'
-  },
-  {
-    id: '2',
-    name: 'Ducati Panigale V4',
-    description: 'High-performance superbike with racing DNA',
-    price: '₹12,23,295',
-    imageSrc: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'bikes'
-  },
-  {
-    id: '3',
-    name: 'Audi e-tron GT',
-    description: 'High-performance electric sports car with stunning design',
-    price: '₹90,04,900',
-    imageSrc: 'https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
-  },
-  {
-    id: '4',
-    name: 'Kawasaki Ninja ZX-10R',
-    description: 'Track-focused sportbike with advanced electronics',
-    price: '₹11,17,399',
-    imageSrc: 'https://images.unsplash.com/photo-1580341289255-5b47c98a59dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'bikes'
-  },
-  {
-    id: '5',
-    name: 'BMW M4 Competition',
-    description: 'High-performance luxury coupe with twin-turbo power',
-    price: '₹70,74,700',
-    imageSrc: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
-  },
-  {
-    id: '6',
-    name: 'Yamaha YZF-R1',
-    description: 'Legendary superbike with MotoGP-derived technology',
-    price: '₹10,17,599',
-    imageSrc: 'https://images.unsplash.com/photo-1558981285-6f0c94958bb6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'bikes'
-  },
-  {
-    id: '7',
-    name: 'Porsche Taycan',
-    description: 'Precision-engineered electric sports car with iconic styling',
-    price: '₹80,86,700',
-    imageSrc: 'https://images.unsplash.com/photo-1619551734325-81aaf323686c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
-  },
-  {
-    id: '8',
-    name: 'Harley-Davidson Pan America',
-    description: 'Adventure touring motorcycle built for exploration',
-    price: '₹10,17,319',
-    imageSrc: 'https://images.unsplash.com/photo-1558980664-1db506751c6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'bikes'
-  },
-];
-
-// Updated categories for vehicles
 const categories = [
   { id: 'all', name: 'All Vehicles' },
   { id: 'cars', name: 'Cars' },
@@ -91,9 +22,16 @@ const Products = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Collect all model paths to pass to the prefetching hook
+  const modelPaths = useMemo(() => {
+    return products.map(p => p.modelPath);
+  }, []);
+  
+  // Use the prefetching hook to load models in the background
+  usePrefetchModels(modelPaths);
+
   return (
     <div className="pt-24">
-      {/* Hero Section */}
       <section className="bg-showcase-dark py-16 md:py-24">
         <div className="container mx-auto px-4">
           <motion.div
@@ -112,10 +50,8 @@ const Products = () => {
         </div>
       </section>
 
-      {/* Products List Section */}
       <section className="section-padding bg-showcase-medium">
         <div className="container mx-auto px-4">
-          {/* Filter Categories */}
           <motion.div
             className="flex flex-wrap gap-3 mb-12 justify-center"
             initial={{ opacity: 0, y: 20 }}
@@ -133,7 +69,6 @@ const Products = () => {
             ))}
           </motion.div>
 
-          {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product, index) => (
               <motion.div
@@ -147,7 +82,6 @@ const Products = () => {
             ))}
           </div>
 
-          {/* Load More Button */}
           <div className="mt-12 text-center">
             <Button 
               variant="outline" 
@@ -160,7 +94,6 @@ const Products = () => {
         </div>
       </section>
 
-      {/* Featured Collection */}
       <section className="section-padding bg-showcase-dark">
         <div className="container mx-auto px-4">
           <SectionHeading

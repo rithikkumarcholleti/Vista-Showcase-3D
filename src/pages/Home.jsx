@@ -12,29 +12,32 @@ import ProductCard from '@/components/ui/ProductCard';
 // Updated featured car products
 const featuredProducts = [
   {
-    id: '1',
-    name: 'Tesla Model S',
-    description: 'All-electric luxury sedan with cutting-edge technology',
-    price: '₹99,89,990',
-    imageSrc: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
-  },
-  {
-    id: '3',
-    name: 'Audi e-tron GT',
-    description: 'High-performance electric sports car with stunning design',
-    price: '₹90,04,900',
-    imageSrc: 'https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
-  },
-  {
-    id: '7',
-    name: 'Porsche Taycan',
-    description: 'Precision-engineered electric sports car with iconic styling',
-    price: '₹80,86,700',
-    imageSrc: 'https://images.unsplash.com/photo-1619551734325-81aaf323686c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'cars'
-  }
+      id: '1',
+      name: 'Tesla Roadster',
+      description: 'All-electric luxury sedan with cutting-edge technology',
+      price: '₹99,89,990',
+      imageSrc: 'https://images.unsplash.com/photo-1622315471002-8f5617067fc4?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      category: 'cars',
+      modelPath: '/models/tesla.glb',
+    },
+    {
+      id: '2',
+      name: 'Ducati V4R',
+      description: 'High-performance superbike with racing DNA',
+      price: '₹12,23,295',
+      imageSrc: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      category: 'bikes', 
+      modelPath: '/models/ducati.glb',
+    },
+    {
+      id: '3',
+      name: 'Audi A7',
+      description: 'High-performance electric sports car with stunning design',
+      price: '₹90,04,900',
+      imageSrc: 'https://images.unsplash.com/photo-1648188692814-30a7a30c2ebb?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      category: 'cars',
+      modelPath: '/models/audi.glb',
+    }
 ];
 
 // Updated features for car showcase
